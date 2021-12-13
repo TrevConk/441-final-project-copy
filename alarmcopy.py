@@ -247,9 +247,9 @@ print("cstate: " + cstate)
 def checkHTML():
   with open(location, 'r') as pinDataRead:
             pinData = json.load(pinDataRead)
-            state = pinData['selection']
+            cstate = pinData['selection']
             secretCode = pinData['pin']
-            print(state)
+            print(cstate)
             # Three different possible states
             # 'Turn Off Alarm' -> disables alarm
             # 'Arm Alarm' -> sensing
