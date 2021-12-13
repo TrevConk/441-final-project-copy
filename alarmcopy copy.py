@@ -271,11 +271,6 @@ stepper = Motor(pins)
 
 print("cstate: " + cstate)
 
-def createAlarm(pir, led): #create a function to create and run alarm for multiprocessing
-  security = Alarm(pir,led)
-  security.setup(led)
-  security.runAlarm(pir, led)
-
 alarmset = multiprocessing.Process(target=createAlarm, args=(pir,led,alarmGoingOff))
 alarmset.start()
 
