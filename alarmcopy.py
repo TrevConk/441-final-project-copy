@@ -306,7 +306,7 @@ try:
           runKey()
           checkHTML()
           print("cstate 2: " + cstate)
-      elif cstate == "Turn Off Alarm":
+      elif cstate == "Turn Off Alarm" or "Reset Pin":
           print("Waiting")
           #runKey()
           checkHTML()
