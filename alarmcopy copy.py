@@ -240,7 +240,7 @@ class Alarm():
     GPIO.output(led, GPIO.LOW)
     #cstate = "Arm Alarm"  
   
-  def runAlarm(self, pir, led): #runs the actual alarm
+  def runAlarm(self, pir, led, alarmGoingOff): #runs the actual alarm
     stepper = Motor(pins)
     try:
         start = time.time()
@@ -261,7 +261,7 @@ class Alarm():
 def createAlarm(pir, led, alarmGoingOff): #create a function to create and run alarm for multiprocessing
     security = Alarm(pir,led,alarmGoingOff)
     security.setup(led)
-    security.runAlarm(pir, led)
+    security.runAlarm(pir, led, alarmGoingOff)
 
 pir = 23 #Assign pin 8 to PIR
 led = 21 #Assign pin 10 to LED
