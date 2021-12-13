@@ -299,7 +299,7 @@ try:
           print("cstate 2: " + cstate)
       elif cstate == "Turn Off Alarm":
           print("Waiting")
-          runKey()
+          #runKey()
           checkHTML()
 except Exception as e:
     print('cod ended')
