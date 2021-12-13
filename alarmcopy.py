@@ -209,7 +209,7 @@ class Alarm():
     GPIO.output(led, GPIO.HIGH)
     time.sleep(1)
     GPIO.output(led, GPIO.LOW)
-    cstate = "Arm Alarm"  
+    #cstate = "Arm Alarm"  
   
   def runAlarm(self, pir, led): #runs the actual alarm
     stepper = Motor(pins)
