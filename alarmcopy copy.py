@@ -294,6 +294,7 @@ try:
             #runKey()
             checkHTML()
             time.sleep(1)
+            print(alarmGoingOff)
 except Exception as e:
     print('cod ended')
     print(e)
