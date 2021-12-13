@@ -303,6 +303,7 @@ try:
           print("Waiting")
           #runKey()
           checkHTML()
+          time.sleep(1)
 except Exception as e:
     print('cod ended')
     print(e)
