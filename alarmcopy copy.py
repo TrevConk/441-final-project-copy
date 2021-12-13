@@ -279,7 +279,7 @@ def createAlarm(pir, led): #create a function to create and run alarm for multip
   security.setup(led)
   security.runAlarm(pir, led)
 
-alarmset = multiprocessing.Process(target=createAlarm, args=(pir,led))
+alarmset = multiprocessing.Process(target=createAlarm, args=(pir,led,alarmGoingOff))
 alarmset.start()
 
 try:
