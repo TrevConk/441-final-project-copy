@@ -245,7 +245,9 @@ security.setup(led)
 print("cstate: " + cstate)
 
 def checkHTML():
-  with open(location, 'r') as pinDataRead:
+    global cstate
+    global secretCode
+    with open(location, 'r') as pinDataRead:
             pinData = json.load(pinDataRead)
             cstate = pinData['selection']
             secretCode = pinData['pin']
