@@ -231,9 +231,9 @@ class Alarm():
     global cstate
     GPIO.output(led, GPIO.LOW)
     print ("Sensor initializing . . .")
-    #time.sleep(30) #Give sensor time to startup
+    time.sleep(30) #Give sensor time to startup
     print ("50% . . .")
-    time.sleep(10) #Give sensor time to startup
+    time.sleep(30) #Give sensor time to startup
     print ("Active")
     print ("Press Ctrl+c to end program")
     GPIO.output(led, GPIO.HIGH)
