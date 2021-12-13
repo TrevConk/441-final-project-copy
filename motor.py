@@ -19,7 +19,7 @@ class Motor():
 
   # Make a full rotation of the output shaft:
   def loop(self, dir): # dir = rotation direction (cw or ccw)
-    for i in range(512): # full revolution (8 cycles/rotation * 64 gear ratio)
+    for i in range(256): # full revolution (8 cycles/rotation * 64 gear ratio)
       for halfstep in range(8): # 8 half-steps per cycle
         for pin in range(4):    # 4 pins that need to be energized
           GPIO.output(self.pins[pin], dir[halfstep][pin])
