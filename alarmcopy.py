@@ -9,6 +9,35 @@ location = '/usr/lib/cgi-bin/pinData.txt'
 
 # global pins, cw, ccw, keypadPressed
 
+def checkHTML():
+    global cstate
+    global secretCode
+    with open(location, 'r') as pinDataRead:
+            pinData = json.load(pinDataRead)
+            cstate = pinData['selection']
+            secretCode = pinData['pin']
+            print(cstate)
+            # Three different possible states
+            # 'Turn Off Alarm' -> disables alarm
+            # 'Arm Alarm' -> sensing
+            # 'Reset Pin' -> changes pin
+
+def updateHTML(state):
+  dataDump = {'pin':secretCode,'selection':state}
+  with open(location, 'w') as f:
+    json.dump(dataDump, f)
+            # Three different possible states
+            # 'Turn Off Alarm' -> disables alarm
+            # 'Arm Alarm' -> sensing
+            # 'Reset Pin' -> changes pin
+
+
+
+
+
+
+
+
 pins = [18,20,22,24] # controller inputs: in1, in2, in3, in4
 ccw = [ [1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],
         [0,0,1,0],[0,0,1,1],[0,0,0,1],[1,0,0,1] ]
@@ -31,7 +60,7 @@ C4 = 16
 # The GPIO pin of the column of the key that is currently
 # being held down or -1 if no key is pressed
 keypadPressed = -1
-secretCode = "1234"
+secretCode = ""
 kinput = ""
 cstate = 'Arm Alarm'
 CC = 0
@@ -104,6 +133,7 @@ def checkSpecialKeys():
             CC = 1
             print(CC)
             cstate = 'Turn Off Alarm'
+            updateHTML('Turn Off Alarm')
             # TODO: stop
         elif kinput == "*":
           print("Alarm Armed")
@@ -243,29 +273,6 @@ security = Alarm(pir,led)
 security.setup(led)
 
 print("cstate: " + cstate)
-
-def checkHTML():
-    global cstate
-    global secretCode
-    with open(location, 'r') as pinDataRead:
-            pinData = json.load(pinDataRead)
-            cstate = pinData['selection']
-            secretCode = pinData['pin']
-            print(cstate)
-            # Three different possible states
-            # 'Turn Off Alarm' -> disables alarm
-            # 'Arm Alarm' -> sensing
-            # 'Reset Pin' -> changes pin
-
-def updateHTML(state):
-  dataDump = {'pin':secretCode,'selection':state}
-  with open(location, 'w') as f:
-    json.dump(dataDump, f)
-            # Three different possible states
-            # 'Turn Off Alarm' -> disables alarm
-            # 'Arm Alarm' -> sensing
-            # 'Reset Pin' -> changes pin
-
 
 
 
