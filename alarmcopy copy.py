@@ -37,6 +37,8 @@ def updateHTML(state):
 
 
 
+
+
 pins = [18,20,22,24] # controller inputs: in1, in2, in3, in4
 ccw = [ [1,0,0,0],[1,1,0,0],[0,1,0,0],[0,1,1,0],
         [0,0,1,0],[0,0,1,1],[0,0,0,1],[1,0,0,1] ]
@@ -223,16 +225,16 @@ def buzzer(BUZZER): #turns on the buzzer and beeps 4 times
 
 class Alarm():
 
-  def __init__(self, pir, led, alarmGoingOff): #create alarm as a pir
+  def __init__(self, pir, led): #create alarm as a pir
     self.alarm = Pir(pir, led)
   
   def setup(self, led): #set up of the sensor to initialize
     global cstate
     GPIO.output(led, GPIO.LOW)
     print ("Sensor initializing . . .")
-    time.sleep(30) #Give sensor time to startup
+    time.sleep(20) #Give sensor time to startup
     print ("50% . . .")
-    time.sleep(30) #Give sensor time to startup
+    time.sleep(20) #Give sensor time to startup
     print ("Active")
     print ("Press Ctrl+c to end program")
     GPIO.output(led, GPIO.HIGH)
@@ -258,8 +260,8 @@ class Alarm():
     except KeyboardInterrupt: #Ctrl+c
         exit()
 
-def createAlarm(pir, led, alarmGoingOff): #create a function to create and run alarm for multiprocessing
-    security = Alarm(pir,led,alarmGoingOff)
+def createAlarm(pir, led): #create a function to create and run alarm for multiprocessing
+    security = Alarm(pir,led)
     security.setup(led)
     security.runAlarm(pir, led, alarmGoingOff)
 
@@ -268,11 +270,15 @@ led = 21 #Assign pin 10 to LED
 
 meme = 0
 stepper = Motor(pins)
+   
+security = Alarm(pir,led)
+security.setup(led)
+
+alarmset = multiprocessing.Process(target=security.runAlarm, args=(pir,led,alarmGoingOff))
+alarmset.start()
 
 print("cstate: " + cstate)
 
-alarmset = multiprocessing.Process(target=createAlarm, args=(pir,led,alarmGoingOff))
-alarmset.start()
 
 try:
   while True:
