@@ -6,6 +6,7 @@ from motor import Motor
 import json
 
 location = '/usr/lib/cgi-bin/pinData.txt'
+alarmGoingOff = multiprocessing.Value('i',0)
 
 # global pins, cw, ccw, keypadPressed
 
@@ -30,8 +31,6 @@ def updateHTML(state):
             # 'Turn Off Alarm' -> disables alarm
             # 'Arm Alarm' -> sensing
             # 'Reset Pin' -> changes pin
-
-
 
 
 
@@ -224,7 +223,7 @@ def buzzer(BUZZER): #turns on the buzzer and beeps 4 times
 
 class Alarm():
 
-  def __init__(self, pir, led): #create alarm as a pir
+  def __init__(self, pir, led, alarmGoingOff): #create alarm as a pir
     self.alarm = Pir(pir, led)
   
   def setup(self, led): #set up of the sensor to initialize
@@ -248,6 +247,7 @@ class Alarm():
         while True:
             if GPIO.input(pir) == True: #If PIR pin goes high, motion is detected
                 print ("Motion Detected!")
+                alarmGoingOff = 1
                 buzzer(13) #turn on buzzer to signal motion
                 GPIO.output(led, GPIO.HIGH) #Turn on LED
                 time.sleep(3) #Keep LED on for 3 seconds
@@ -274,43 +274,34 @@ security.setup(led)
 
 print("cstate: " + cstate)
 
+def createAlarm(pir, led): #create a function to create and run alarm for multiprocessing
+  security = Alarm(pir,led)
+  security.setup(led)
+  security.runAlarm(pir, led)
 
+alarmset = multiprocessing.Process(target=createAlarm, args=(pir,led))
+alarmset.start()
 
 try:
   while True:
-      checkHTML()
-      if cstate == "Arm Alarm":
-          # Wait for 1 second between loops
-          time.sleep(1)
+        checkHTML()
+        if cstate == "Arm Alarm" and alarmGoingOff == 0:
+            # Wait for 1 second between loops
+            time.sleep(1)
 
-          # Look left and scan for motion for 10 seconds
-          stepper.loop(cw)
-          security.runAlarm(pir, led)    
-
-          # Give 10 seconds to deactivate
-          print("Enter Code to deactivate")
-          runKey()
-          checkHTML()
-          
-          print("cstate 1: " + cstate)
-
-          if(cstate == "Turn Off Alarm"):
-              continue
-
-          # Look right and scan for motion for 10 seconds
-          stepper.loop(ccw)
-          security.runAlarm(pir, led)
-
-          # Give 10 seconds to deactivate
-          print("Enter Code to deactivate")
-          runKey()
-          checkHTML()
-          print("cstate 2: " + cstate)
-      elif cstate == "Turn Off Alarm" or "Reset Pin":
-          print("Waiting")
-          #runKey()
-          checkHTML()
-          time.sleep(1)
+            # Look left and scan for motion for 10 seconds
+            stepper.loop(cw)
+            checkHTML() 
+            stepper.loop(ccw)
+            checkHTML()
+        elif cstate == "Arm Alarm" and alarmGoingOff == 1:
+            runKey()
+            checkHTML()
+        elif cstate == "Turn Off Alarm" or "Reset Pin":
+            print("Waiting")
+            #runKey()
+            checkHTML()
+            time.sleep(1)
 except Exception as e:
     print('cod ended')
     print(e)
