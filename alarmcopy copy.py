@@ -268,9 +268,6 @@ led = 21 #Assign pin 10 to LED
 
 meme = 0
 stepper = Motor(pins)
-   
-security = Alarm(pir,led)
-security.setup(led)
 
 print("cstate: " + cstate)
 
