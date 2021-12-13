@@ -258,8 +258,8 @@ class Alarm():
     except KeyboardInterrupt: #Ctrl+c
         exit()
 
-def createAlarm(pir, le): #create a function to create and run alarm for multiprocessing
-    security = Alarm(pir,led)
+def createAlarm(pir, led, alarmGoingOff): #create a function to create and run alarm for multiprocessing
+    security = Alarm(pir,led,alarmGoingOff)
     security.setup(led)
     security.runAlarm(pir, led)
 
